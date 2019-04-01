@@ -1,0 +1,12 @@
+<body>
+
+	<h1>Package Delivery Management System</h1>
+
+	{% block content %}
+	<ul>
+		<li><a href="{% url 'sec_guard:new_entry' %}">Make a new entry</a></li>
+		<li><a href="{% url 'sec_guard:search_by_phone' %}">Search delivery by phone number</a></li>
+	</ul>
+	{%  endblock %}
+
+</body>
