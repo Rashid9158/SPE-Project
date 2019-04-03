@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, reverse
+from django.http import HttpResponseRedirect
 from datetime import datetime
+from django.contrib import messages
+from .forms import NewEntryForm
 import random
 
 # Create your views here.
@@ -7,7 +10,19 @@ def index(request):
 	return render(request, 'sec_guard/index.html')
 
 def new_entry(request):
-	return render(request, 'sec_guard/new_entry.html')
+	if request.method == 'POST':
+		new_entry_form = NewEntryForm(request.POST)
+
+		if new_entry_form.is_valid():
+			new_entry_form.save()
+			messages.success(request, 'QR code generated and has been sent successfully')
+			return HttpResponseRedirect(reverse('sec_guard:index'))
+		else:
+			return render(request, 'sec_guard/new_entry.html', {'new_entry_form': new_entry_form})
+	else:
+		random.seed(datetime.now())		
+		new_entry_form = NewEntryForm(initial={'productid': random.randint(100000,999999)}) 
+		return render(request, 'sec_guard/new_entry.html', {'new_entry_form': new_entry_form})
 
 def search_by_phone(request):
 	return render(request, 'sec_guard/search_by_phone.html')

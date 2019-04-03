@@ -1,19 +1,4 @@
-{%  extends "sec_guard/index.html" %}
 
-{%  block content %}
-	<form action="{% url 'sec_guard:detail' %}" method="post">
-	{% csrf_token %}
-
-		<table>
-		    <tr>
-		    	<td>Phone no:</td>
-		        <td><input type="tel" name="phone"></td>
-		    </tr> 
-		</table>
-		    
-				<input type="submit" value="Submit">
-	</form>	
-{% endblock %}
 
 
 
