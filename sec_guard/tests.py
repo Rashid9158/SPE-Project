@@ -5,7 +5,7 @@ from .models import Package
 
 #Test Case for model
 class PackageTest(TestCase):
-	def create_package(self, phone="9876543210", orderedfrom="Amazon", productid=23415):
+	def create_package(self, phone="9876543210", orderedfrom="Amazon"):
 		return Package.objects.create(orderedfrom=orderedfrom, productid=productid)
 
 	def test_creation(self):
