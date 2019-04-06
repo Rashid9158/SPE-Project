@@ -3,6 +3,8 @@ from django.http import HttpResponseRedirect
 from datetime import datetime
 from django.contrib import messages
 from .forms import NewEntryForm
+from twilio.rest import Client
+from delservice import settings
 import random
 import json
 import qrcode
@@ -17,10 +19,9 @@ def new_entry(request):
 		new_entry_form = NewEntryForm(request.POST)
 
 		if new_entry_form.is_valid():
-			new_entry_form.save()
 
-			new_entry_detail={'phone': request.POST['phone'], 'orderedfrom': request.POST['orderedfrom'], 'productid': request.POST['productid']}
-			new_entry_json=json.dumps(new_entry_detail)
+			new_entry_detail = {'phone': request.POST['phone'], 'orderedfrom': request.POST['orderedfrom'], 'productid': request.POST['productid']}
+			new_entry_json = json.dumps(new_entry_detail)
 			
 			qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=2,)
 			qr.add_data(new_entry_json)
@@ -31,8 +32,10 @@ def new_entry(request):
 			res = cloudinary.uploader.upload('image.jpg', format='jpg')
 			img_url = res['url']
 
-			
+			client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)			
+			message = client.messages.create(to ='+91' + new_entry_detail['phone'], from_=settings.TWILIO_DEFAULT_CALLERID, body =img_url)
 
+			new_entry_form.save()
 
 			messages.success(request, 'QR code generated and has been sent successfully')
 			return HttpResponseRedirect(reverse('sec_guard:index'))

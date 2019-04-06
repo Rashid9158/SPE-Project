@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cloudinary',
+    'twilio',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +129,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# django-twilio credentials settings
+TWILIO_ACCOUNT_SID = 'AC64c7215e8f21c2fb5680c3ff68da0ec4'
+TWILIO_AUTH_TOKEN = '2a27cda9c4ffd9604a026a69efa957d8' 
+TWILIO_DEFAULT_CALLERID = '+12013895496'
