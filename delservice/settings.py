@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -81,6 +82,14 @@ DATABASES = {
     }
 }
 
+# Cloudinary configuration
+# https://cloudinary.com/documentation/django_integration
+
+CLOUDINARY = {
+  'cloud_name': 'dni3cvnt3',  
+  'api_key': '461691598686381',  
+  'api_secret': 'kuT2hFtPpwLg-fRo76Lqo6OUdck',  
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators

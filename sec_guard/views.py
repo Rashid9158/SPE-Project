@@ -6,7 +6,7 @@ from .forms import NewEntryForm
 import random
 import json
 import qrcode
-import cloudinary
+import cloudinary, cloudinary.uploader
 
 # Create your views here.
 def index(request):
@@ -28,7 +28,10 @@ def new_entry(request):
 			img = qr.make_image(fill_color="black", back_color="white")
 			img.save('image.jpg');
 
-			cloudinary.uploader.upload('image.jpg')
+			res = cloudinary.uploader.upload('image.jpg', format='jpg')
+			img_url = res['url']
+
+			
 
 
 			messages.success(request, 'QR code generated and has been sent successfully')
