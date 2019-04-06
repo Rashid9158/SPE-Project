@@ -5,9 +5,11 @@ from django.contrib import messages
 from .forms import NewEntryForm
 from twilio.rest import Client
 from delservice import settings
+from botocore.client import Config
 import random
 import json
 import qrcode
+import boto3
 import cloudinary, cloudinary.uploader
 
 # Create your views here.
@@ -29,8 +31,16 @@ def new_entry(request):
 			img = qr.make_image(fill_color="black", back_color="white")
 			img.save('image.jpg');
 
-			res = cloudinary.uploader.upload('image.jpg', format='jpg')
-			img_url = res['url']
+			# To store on cloudinary and getting url
+			# res = cloudinary.uploader.upload('image.jpg', format='jpg', public_id= new_entry_detail['productid'])
+			# img_url = res['url']
+
+			# To store on s3 bucket AWS and getting url
+			image_body = open('image.jpg', 'rb')
+			config = Config(signature_version='s3v4')
+			s3 = boto3.resource('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID, aws_secret_access_key=settings.AWS_ACCESS_SECRET_KEY, config=Config(signature_version='s3v4'))
+			s3.Bucket(settings.AWS_BUCKET_NAME).put_object(Key =new_entry_detail['productid'] + '.jpg', Body =image_body)
+			img_url = "https://s3.ap-south-1.amazonaws.com/{0}/{1}".format(settings.AWS_BUCKET_NAME, new_entry_detail['productid'] + '.jpg')
 
 			client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)			
 			message = client.messages.create(to ='+91' + new_entry_detail['phone'], from_=settings.TWILIO_DEFAULT_CALLERID, body =img_url)
