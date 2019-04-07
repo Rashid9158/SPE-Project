@@ -25,6 +25,7 @@ def new_entry(request):
 			new_entry_detail = {'phone': request.POST['phone'], 'orderedfrom': request.POST['orderedfrom'], 'productid': request.POST['productid']}
 			new_entry_json = json.dumps(new_entry_detail)
 			
+			# qr code generation
 			qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=2,)
 			qr.add_data(new_entry_json)
 			qr.make(fit=True)
@@ -42,6 +43,7 @@ def new_entry(request):
 			s3.Bucket(settings.AWS_BUCKET_NAME).put_object(Key =new_entry_detail['productid'] + '.jpg', Body =image_body)
 			img_url = "https://s3.ap-south-1.amazonaws.com/{0}/{1}".format(settings.AWS_BUCKET_NAME, new_entry_detail['productid'] + '.jpg')
 
+			# Twilio for messaging
 			client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)			
 			message = client.messages.create(to ='+91' + new_entry_detail['phone'], from_=settings.TWILIO_DEFAULT_CALLERID, body =img_url)
 

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
+from my_secrets import secrets
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary',
     'twilio',
+    'django_secrets'
 ]
 
 MIDDLEWARE = [
@@ -131,11 +133,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # django-twilio credentials settings
-TWILIO_ACCOUNT_SID = 'AC64c7215e8f21c2fb5680c3ff68da0ec4'
-TWILIO_AUTH_TOKEN = '2a27cda9c4ffd9604a026a69efa957d8' 
-TWILIO_DEFAULT_CALLERID = '+12013895496'
+TWILIO_ACCOUNT_SID= secrets.TWILIO_ACCOUNT_SID
+TWILIO_AUTH_TOKEN= secrets.TWILIO_AUTH_TOKEN
+TWILIO_DEFAULT_CALLERID= secrets.TWILIO_DEFAULT_CALLERID
 
 # AWS S3 bucket credentials
-AWS_ACCESS_KEY_ID='AKIAJRQPBZQCJ2WESZBA'
-AWS_ACCESS_SECRET_KEY='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'
-AWS_BUCKET_NAME='speprojbucket'
+AWS_ACCESS_KEY_ID= secrets.AWS_ACCESS_KEY_ID
+AWS_ACCESS_SECRET_KEY= secrets.AWS_ACCESS_SECRET_KEY
+AWS_BUCKET_NAME= secrets.AWS_BUCKET_NAME
