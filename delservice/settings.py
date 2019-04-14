@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary',
     'twilio',
-    'django_secrets'
+    'django_secrets',
 ]
 
 MIDDLEWARE = [
@@ -89,9 +89,9 @@ DATABASES = {
 # https://cloudinary.com/documentation/django_integration
 
 CLOUDINARY = {
-  'cloud_name': 'dni3cvnt3',  
-  'api_key': '461691598686381',  
-  'api_secret': 'kuT2hFtPpwLg-fRo76Lqo6OUdck',  
+  'cloud_name': secrets.CLOUDINARY_CLOUD_NAME,  
+  'api_key': secrets.CLOUDINARY_API_KEY,  
+  'api_secret': secrets.CLOUDINARY_API_SECRET,  
 }
 
 # Password validation
@@ -138,6 +138,6 @@ TWILIO_AUTH_TOKEN= secrets.TWILIO_AUTH_TOKEN
 TWILIO_DEFAULT_CALLERID= secrets.TWILIO_DEFAULT_CALLERID
 
 # AWS S3 bucket credentials
-AWS_ACCESS_KEY_ID= secrets.AWS_ACCESS_KEY_ID
-AWS_ACCESS_SECRET_KEY= secrets.AWS_ACCESS_SECRET_KEY
-AWS_BUCKET_NAME= secrets.AWS_BUCKET_NAME
+# AWS_ACCESS_KEY_ID= secrets.AWS_ACCESS_KEY_ID
+# AWS_ACCESS_SECRET_KEY= secrets.AWS_ACCESS_SECRET_KEY
+# AWS_BUCKET_NAME= secrets.AWS_BUCKET_NAME
