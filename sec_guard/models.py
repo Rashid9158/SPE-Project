@@ -16,3 +16,6 @@ class Package(models.Model):
     orderedfrom = models.CharField(max_length=20, blank=False)
     productid= models.IntegerField(primary_key=True)
     taken= models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.productid)

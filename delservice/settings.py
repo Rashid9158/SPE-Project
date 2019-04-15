@@ -26,7 +26,7 @@ SECRET_KEY = 'bamyp5l46-xo^o5qryecusf$$kcozhna08v5165es@_-5h7342'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'cloudinary',
     'twilio',
     'django_secrets',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
