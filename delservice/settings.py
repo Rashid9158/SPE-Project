@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'twilio',
     'django_secrets',
     'rest_framework',
+    'watchman',
 ]
 
 MIDDLEWARE = [
