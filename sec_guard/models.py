@@ -3,7 +3,7 @@ from django.core.validators import RegexValidator, MinLengthValidator, MaxLength
 
 #create your models here
 class Package(models.Model):
-    phone = models.CharField(max_length=10, 
+    phone = models.CharField(max_length=10,
     	validators=[
             RegexValidator(
                 r'^[0-9]*$',
@@ -12,10 +12,10 @@ class Package(models.Model):
             ),
             MinLengthValidator(10),
             MaxLengthValidator(10),
-        ],)
-    orderedfrom = models.CharField(max_length=20, blank=False)
-    productid= models.IntegerField(primary_key=True)
+        ], primary_key=True)
+    orderedfrom = models.CharField(max_length=300, blank=False)
+    productid= models.IntegerField(null=True)
     taken= models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.productid)
+        return self.phone
