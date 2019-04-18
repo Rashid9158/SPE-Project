@@ -15,9 +15,10 @@
 
 
 from django.urls import path
-from .apiviews import PackageDetailUpdate, PackageCreate
+from .apiviews import PackageCreate, PackageDetailDeliver, DelPackageDetail
 
 urlpatterns = [
     path("sec_guard/", PackageCreate.as_view(), name="package_create"),
-    path("sec_guard/<pk>/", PackageDetailUpdate.as_view(), name="package_detail_update"),
+    path("sec_guard/<pk>/", PackageDetailDeliver.as_view(), name="package_detail_deliver"),
+    path("sec_guard/search/<phone>/", DelPackageDetail.as_view(), name="del_package_detail"),
 ]

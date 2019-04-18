@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Package
-from .serializers import PackageSerializer
+from .models import Package, DelPackage
+from .serializers import PackageSerializer, DelPackageSerializer
 from django.http import Http404
 from rest_framework import status
 from twilio.rest import Client
@@ -46,7 +46,7 @@ class PackageCreate(APIView):
 			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 		
 		else:
-			Package.objects.filter(pk=temp_package.phone).update(orderedfrom = temp_package.orderedfrom + ", " + request.data['orderedfrom'])
+			Package.objects.filter(pk=temp_package.phone).update(orderedfrom = temp_package.orderedfrom + ", " + request.data['orderedfrom'], quantity=temp_package.quantity+1)
 			temp_package.refresh_from_db()
 
 			# qr code generation
@@ -69,9 +69,7 @@ class PackageCreate(APIView):
 
 
 
-
-
-class PackageDetailUpdate(APIView):
+class PackageDetailDeliver(APIView):
 
 	def get_object(self, pk):
 		try:
@@ -84,18 +82,44 @@ class PackageDetailUpdate(APIView):
 		serializer = PackageSerializer(package)
 		return Response(serializer.data)
 
-	def put(self, request, pk, format=None):
+	def delete(self, request, pk, format=None):
 		package = self.get_object(pk)
-		serializer = PackageSerializer(package, data=request.data)
-		if serializer.is_valid():
+		now = datetime.now()
+		temp_package = DelPackage.objects.create(phone=package.phone, orderedfrom=package.orderedfrom, productid=package.productid, quantity=package.quantity, datetime=now.strftime("Date: %d %B %Y, Time: %I:%M %p"))
+		package.delete()
 
-			# saving in database
-			serializer.save()
+		# Twilio for messaging
+		client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)			
+		message = client.messages.create(to ='+91' + temp_package.phone, from_=settings.TWILIO_DEFAULT_CALLERID, body ="Package Delivered. If its not you visit the reception")
 
-			# Twilio for messaging
-			client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)			
-			message = client.messages.create(to ='+91' + serializer.data['phone'], from_=settings.TWILIO_DEFAULT_CALLERID, body ="Package Delivered. If its not you visit the reception")
-			
-			# returning response
-			return Response({"message":"Package Delivered"})
-		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+		# sending response
+		return Response({"message":"Package Delivered"})
+
+
+
+class DelPackageDetail(APIView):
+
+	def get_object(self, phone):
+		try:
+			return DelPackage.objects.filter(phone=phone)
+		except DelPackage.DoesNotExist:
+			raise Http404
+
+	def get(self, request, phone, format=None):
+		delpackage = self.get_object(phone)
+		serializer = DelPackageSerializer(delpackage, many=True)
+		return Response(serializer.data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
