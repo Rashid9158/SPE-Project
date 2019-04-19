@@ -54,7 +54,7 @@ class DelPackageModelTest(TestCase):
 		self.assertTrue(isinstance(w,DelPackage))
 
 
-# Test Case for API GET for model DelPackage
+# Test Case for APIs GET for model DelPackage
 class DelPackageGetTest(APITestCase):
 	def test_get_package(self, phone="9158399067"):
 		DelPackage.objects.create(phone="9158399067", orderedfrom="myntra", productid="431267", quantity=1)
