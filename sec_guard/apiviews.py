@@ -33,13 +33,13 @@ class PackageCreate(APIView):
 				img = qr.make_image(fill_color="black", back_color="white")
 				img.save('image.jpg');
 
-				# To store on cloudinary and getting url
-				res = cloudinary.uploader.upload('image.jpg', format='jpg', public_id= prod_id)
-				img_url = res['url']
+				# # To store on cloudinary and getting url
+				# res = cloudinary.uploader.upload('image.jpg', format='jpg', public_id= prod_id)
+				# img_url = res['url']
 
-				# Twilio for messaging
-				client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)			
-				message = client.messages.create(to ='+91' + serializer.data['phone'], from_=settings.TWILIO_DEFAULT_CALLERID, body ="Get this qr code scanned " + img_url + " and collect your delivery from the reception. ")
+				# # Twilio for messaging
+				# client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)			
+				# message = client.messages.create(to ='+91' + serializer.data['phone'], from_=settings.TWILIO_DEFAULT_CALLERID, body ="Get this qr code scanned " + img_url + " and collect your delivery from the reception. ")
 
 			 	# returning response
 				return Response({"message":prod_id})
@@ -56,13 +56,13 @@ class PackageCreate(APIView):
 			img = qr.make_image(fill_color="black", back_color="white")
 			img.save('image.jpg');
 
-			# To store on cloudinary and getting url
-			res = cloudinary.uploader.upload('image.jpg', format='jpg', public_id= temp_package.productid)
-			img_url = res['url']
+			# # To store on cloudinary and getting url
+			# res = cloudinary.uploader.upload('image.jpg', format='jpg', public_id= temp_package.productid)
+			# img_url = res['url']
 
-			# Twilio for messaging
-			client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)			
-			message = client.messages.create(to ='+91' + temp_package.phone, from_=settings.TWILIO_DEFAULT_CALLERID, body ="Get this qr code scanned " + img_url + " and collect your delivery from the reception. ")
+			# # Twilio for messaging
+			# client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)			
+			# message = client.messages.create(to ='+91' + temp_package.phone, from_=settings.TWILIO_DEFAULT_CALLERID, body ="Get this qr code scanned " + img_url + " and collect your delivery from the reception. ")
 
 			# returning response
 			return Response({"message":temp_package.productid})
@@ -88,9 +88,9 @@ class PackageDetailDeliver(APIView):
 		temp_package = DelPackage.objects.create(phone=package.phone, orderedfrom=package.orderedfrom, productid=package.productid, quantity=package.quantity, datetime=now.strftime("Date: %d %B %Y, Time: %I:%M %p"))
 		package.delete()
 
-		# Twilio for messaging
-		client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)			
-		message = client.messages.create(to ='+91' + temp_package.phone, from_=settings.TWILIO_DEFAULT_CALLERID, body ="Package Delivered. If its not you visit the reception")
+		# # Twilio for messaging
+		# client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)			
+		# message = client.messages.create(to ='+91' + temp_package.phone, from_=settings.TWILIO_DEFAULT_CALLERID, body ="Package Delivered. If its not you visit the reception")
 
 		# sending response
 		return Response({"message":"Package Delivered"})
