@@ -100,10 +100,7 @@ class PackageDetailDeliver(APIView):
 class DelPackageDetail(APIView):
 
 	def get_object(self, phone):
-		try:
-			return DelPackage.objects.filter(phone=phone)
-		except DelPackage.DoesNotExist:
-			raise Http404
+		return DelPackage.objects.filter(phone=phone)
 
 	def get(self, request, phone, format=None):
 		delpackage = self.get_object(phone)
