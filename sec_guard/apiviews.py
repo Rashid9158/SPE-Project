@@ -117,6 +117,3 @@ class DelPackageDetail(APIView):
 
 
 
-
-
-
