@@ -12,4 +12,4 @@ class PackageSerializer(serializers.ModelSerializer):
 class DelPackageSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = DelPackage
-		fields = ('productid', 'phone', 'orderedfrom', 'quantity', 'datetime', 'status')
+		fields = ('productid', 'phone', 'orderedfrom', 'quantity', 'datetime', 'status', 'deliveredto')

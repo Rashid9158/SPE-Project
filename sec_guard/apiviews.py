@@ -87,12 +87,6 @@ class PackageDetailDeliver(APIView):
 		now = datetime.now()
 		temp_package = DelPackage.objects.create(phone=package.phone, orderedfrom=package.orderedfrom, productid=package.productid, quantity=package.quantity, datetime=now.strftime("Date: %d %B %Y, Time: %I:%M %p"))
 		package.delete()
-
-		# # Twilio for messaging
-		# client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)			
-		# message = client.messages.create(to ='+91' + temp_package.phone, from_=settings.TWILIO_DEFAULT_CALLERID, body ="Package Delivered. If its not you visit the reception")
-
-		# sending response
 		return Response({"message":"Package Delivered"})
 
 
@@ -107,13 +101,16 @@ class DelPackageDetail(APIView):
 		serializer = DelPackageSerializer(delpackage, many=True)
 		return Response(serializer.data)
 
-
-
-
-
-
-
-
+	def put(self, request, phone, format=None):
+		delpackage = DelPackage.objects.filter(phone=phone).last()
+		serializer = DelPackageSerializer(delpackage, data=request.data, partial=True)
+		if serializer.is_valid():
+			serializer.save()
+			# # Twilio for messaging
+			# client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)			
+			# message = client.messages.create(to ='+91' + delpackage.phone, from_=settings.TWILIO_DEFAULT_CALLERID, body ="Package Delivered to " + delpackage.deliveredto + ". If its not you visit the reception.")
+			return Response(serializer.data)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
